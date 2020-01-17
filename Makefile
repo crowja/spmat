@@ -13,7 +13,7 @@ VALGRIND_FLAGS = --leak-check=full --undef-value-errors=yes
 
 INDENT_FLAGS = -TFILE -Tsize_t -Tuint8_t
 
-.PHONY: check check-examples vcheck scheck echeck indent stamp clean
+.PHONY: all check check-examples scheck-examples vcheck scheck echeck indent stamp clean
 
 TESTS = t/test
 EXAMPLES = ex/ex_1
