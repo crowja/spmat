@@ -18,14 +18,16 @@ INDENT_FLAGS = -TFILE -Tsize_t -Tuint8_t
 TESTS = t/test
 EXAMPLES = ex/ex_1
 
+all: spmat.o spmat_coo.o spmat_csr.o
+
 spmat.o: spmat.c spmat.h
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ spmat.c
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $*.c
 
 spmat_coo.o: spmat_coo.c spmat_coo.h
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ spmat_coo.c
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $*.c
 
 spmat_csr.o: spmat_csr.c spmat_csr.h
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ spmat_csr.c
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $*.c
 
 check:
 	@for i in $(TESTS); \
