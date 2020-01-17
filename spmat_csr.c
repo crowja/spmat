@@ -1,7 +1,7 @@
 /**
  *  @file spmat_csr.c
  *  @version 0.1.0-dev0
- *  @date Thu Jan 16 20:37:14 CST 2020
+ *  @date Thu Jan 16 22:46:39 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  */
@@ -21,11 +21,15 @@
 #endif
 #define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
 
+struct cv {
+   unsigned    colind;
+   double      val;
+};
+
 struct spmat_csr {
    void       *x;
    unsigned   *rowptr;
-   unsigned   *colind;
-   double     *val;
+   struct cv  *colval;
 };
 
 struct spmat_csr *

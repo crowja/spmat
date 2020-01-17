@@ -89,7 +89,7 @@ echeck:
 	  && ( LD_PRELOAD=libefence.so t/a.out ) ; \
 	done 
 
-indent: stamp
+indent: 
 	@indent $(INDENT_FLAGS) spmat.c
 	@indent $(INDENT_FLAGS) spmat.h
 	@indent $(INDENT_FLAGS) spmat_coo.c

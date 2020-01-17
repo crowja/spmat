@@ -1,7 +1,7 @@
 /**
  *  @file spmat_coo.c
  *  @version 0.1.0-dev0
- *  @date Thu Jan 16 20:37:14 CST 2020
+ *  @date Thu Jan 16 22:46:39 CST 2020
  *  @copyright 2020 John A. Crow
  *  @license Unlicense <http://unlicense.org/>
  */
@@ -22,7 +22,7 @@
 #endif
 #define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
 
-struct spmat_coo_triple {
+struct ijv {
    unsigned    i;
    unsigned    j;
    double      v;
@@ -32,7 +32,7 @@ struct spmat_coo {
    unsigned    len;                         /* number of triples */
    unsigned    size;                        /* size of triples buffer */
    unsigned    extend;                      /* buffer extension */
-   struct spmat_coo_triple *x;              /* list of triples */
+   struct ijv *x;                           /* list of triples */
    double     *wrk;                         /* used only if needed */
 };
 
@@ -72,17 +72,17 @@ spmat_coo_version(void)
 static int
 _cmp(const void *a, const void *b)
 {
-   if (((struct spmat_coo_triple *) a)->i < ((struct spmat_coo_triple *) b)->i)
+   if (((struct ijv *) a)->i < ((struct ijv *) b)->i)
       return -1;
-   if (((struct spmat_coo_triple *) a)->i > ((struct spmat_coo_triple *) b)->i)
+   if (((struct ijv *) a)->i > ((struct ijv *) b)->i)
       return 1;
-   if (((struct spmat_coo_triple *) a)->j < ((struct spmat_coo_triple *) b)->j)
+   if (((struct ijv *) a)->j < ((struct ijv *) b)->j)
       return -1;
-   if (((struct spmat_coo_triple *) a)->j > ((struct spmat_coo_triple *) b)->j)
+   if (((struct ijv *) a)->j > ((struct ijv *) b)->j)
       return 1;
-   if (((struct spmat_coo_triple *) a)->v < ((struct spmat_coo_triple *) b)->v)
+   if (((struct ijv *) a)->v < ((struct ijv *) b)->v)
       return -1;
-   if (((struct spmat_coo_triple *) a)->v > ((struct spmat_coo_triple *) b)->v)
+   if (((struct ijv *) a)->v > ((struct ijv *) b)->v)
       return 1;
 
    return 0;
@@ -95,7 +95,7 @@ spmat_coo_compact(struct spmat_coo *p, double tol)
 
    tol = fabs(tol);
 
-   qsort(p->x, p->len, sizeof(struct spmat_coo_triple), _cmp);
+   qsort(p->x, p->len, sizeof(struct ijv), _cmp);
 
    /* Combine (add) consecutive locations with repeated i, j */
    for (k = 1, k0 = 0; k < p->len; k++) {
@@ -158,10 +158,10 @@ spmat_coo_dump(struct spmat_coo *p)
 int
 spmat_coo_insert(struct spmat_coo *p, unsigned i, unsigned j, double v)
 {
-   struct spmat_coo_triple *y;
+   struct ijv *y;
 
    if (p->len == p->size) {
-      y = realloc(p->x, (p->size + p->extend) * sizeof(struct spmat_coo_triple));
+      y = realloc(p->x, (p->size + p->extend) * sizeof(struct ijv));
 
       if (_IS_NULL(y))
          return 1;

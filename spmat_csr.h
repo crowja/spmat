@@ -1,7 +1,7 @@
 /**
  *  @file spmat_csr.h
  *  @version 0.1.0-dev0
- *  @date Thu Jan 16 20:37:14 CST 2020
+ *  @date Thu Jan 16 22:46:39 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  */
