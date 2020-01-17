@@ -1,2 +1,3 @@
-# spmat
-Sparse matrix structures.
+# spmat 0.0.0.
+
+
