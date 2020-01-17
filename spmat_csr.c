@@ -23,6 +23,9 @@
 
 struct spmat_csr {
    void       *x;
+   unsigned   *rowptr;
+   unsigned   *colind;
+   double     *val;
 };
 
 struct spmat_csr *
