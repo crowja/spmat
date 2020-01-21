@@ -22,7 +22,7 @@
 #endif
 #define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
 
-struct spmat_coo_triple {
+struct rcv {
    unsigned    i;
    unsigned    j;
    double      v;
@@ -32,7 +32,7 @@ struct spmat_coo {
    unsigned    nnz;                         /* number of triples */
    unsigned    size;                        /* alloced size of list */
    unsigned    extend;                      /* buffer extension */
-   struct spmat_coo_triple *list;           /* list of triples */
+   struct rcv *list;                        /* list of triples */
 };
 
 struct spmat_coo *
@@ -86,17 +86,18 @@ spmat_coo_colsums(struct spmat_coo *p, unsigned n, double *c)
 static int
 _cmp_crv(const void *a, const void *b)
 {
-   if (((struct spmat_coo_triple *) a)->j < ((struct spmat_coo_triple *) b)->j)
+   /* For sorting by ascending column, then row, then value */
+   if (((struct rcv *) a)->j < ((struct rcv *) b)->j)
       return -1;
-   if (((struct spmat_coo_triple *) a)->j > ((struct spmat_coo_triple *) b)->j)
+   if (((struct rcv *) a)->j > ((struct rcv *) b)->j)
       return 1;
-   if (((struct spmat_coo_triple *) a)->i < ((struct spmat_coo_triple *) b)->i)
+   if (((struct rcv *) a)->i < ((struct rcv *) b)->i)
       return -1;
-   if (((struct spmat_coo_triple *) a)->i > ((struct spmat_coo_triple *) b)->i)
+   if (((struct rcv *) a)->i > ((struct rcv *) b)->i)
       return 1;
-   if (((struct spmat_coo_triple *) a)->v < ((struct spmat_coo_triple *) b)->v)
+   if (((struct rcv *) a)->v < ((struct rcv *) b)->v)
       return -1;
-   if (((struct spmat_coo_triple *) a)->v > ((struct spmat_coo_triple *) b)->v)
+   if (((struct rcv *) a)->v > ((struct rcv *) b)->v)
       return 1;
 
    return 0;
@@ -105,17 +106,18 @@ _cmp_crv(const void *a, const void *b)
 static int
 _cmp_rcv(const void *a, const void *b)
 {
-   if (((struct spmat_coo_triple *) a)->i < ((struct spmat_coo_triple *) b)->i)
+   /* For sorting by ascending column, then row, then value */
+   if (((struct rcv *) a)->i < ((struct rcv *) b)->i)
       return -1;
-   if (((struct spmat_coo_triple *) a)->i > ((struct spmat_coo_triple *) b)->i)
+   if (((struct rcv *) a)->i > ((struct rcv *) b)->i)
       return 1;
-   if (((struct spmat_coo_triple *) a)->j < ((struct spmat_coo_triple *) b)->j)
+   if (((struct rcv *) a)->j < ((struct rcv *) b)->j)
       return -1;
-   if (((struct spmat_coo_triple *) a)->j > ((struct spmat_coo_triple *) b)->j)
+   if (((struct rcv *) a)->j > ((struct rcv *) b)->j)
       return 1;
-   if (((struct spmat_coo_triple *) a)->v < ((struct spmat_coo_triple *) b)->v)
+   if (((struct rcv *) a)->v < ((struct rcv *) b)->v)
       return -1;
-   if (((struct spmat_coo_triple *) a)->v > ((struct spmat_coo_triple *) b)->v)
+   if (((struct rcv *) a)->v > ((struct rcv *) b)->v)
       return 1;
 
    return 0;
@@ -128,7 +130,7 @@ spmat_coo_compact(struct spmat_coo *p, double tol)
 
    tol = fabs(tol);
 
-   qsort(p->list, p->nnz, sizeof(struct spmat_coo_triple), _cmp_rcv);
+   qsort(p->list, p->nnz, sizeof(struct rcv), _cmp_rcv);
 
    /* Combine (add) consecutive locations with repeated i, j */
    for (k = 1, k0 = 0; k < p->nnz; k++) {
@@ -191,10 +193,10 @@ spmat_coo_dump(struct spmat_coo *p)
 int
 spmat_coo_insert(struct spmat_coo *p, unsigned i, unsigned j, double v)
 {
-   struct spmat_coo_triple *y;
+   struct rcv *y;
 
    if (p->nnz == p->size) {
-      y = realloc(p->list, (p->size + p->extend) * sizeof(struct spmat_coo_triple));
+      y = realloc(p->list, (p->size + p->extend) * sizeof(struct rcv));
 
       if (_IS_NULL(y))
          return -1;
