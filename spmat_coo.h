@@ -34,8 +34,6 @@ void        spmat_coo_free(struct spmat_coo **pp);
     @returns FIXME
  */
 const char *spmat_coo_version(void);
-int         spmat_coo_init(struct spmat_coo *p, void *x);
-
 void        spmat_coo_colsums(struct spmat_coo *p, unsigned n, double *c);
 void        spmat_coo_compact(struct spmat_coo *p, double tol);
 int         spmat_coo_copy(struct spmat_coo *p, struct spmat_coo *q);

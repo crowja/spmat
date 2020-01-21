@@ -344,44 +344,5 @@ spmat_coo_shape(struct spmat_coo *p, unsigned *minrow, unsigned *maxrow, unsigne
    }
 }
 
-#if 0
-struct spmat_coo_iter {
-   void       *x;
-   const struct spmat_coo *mat;
-   unsigned    k;                           /* current index */
-};
-
-struct spmat_coo_iter *
-spmat_coo_iter_new(const struct spmat_coo *mat)
-{
-   struct spmat_coo_iter *tp;
-
-   tp = (struct spmat_coo_iter *) malloc(sizeof(struct spmat_coo_iter));
-   if (_IS_NULL(tp))
-      return NULL;
-
-   if (_IS_NULL(mat))
-      return NULL;
-
-   tp->mat = mat;
-   tp->k = 0;
-
-   return tp;
-}
-
-void
-spmat_coo_iter_free(struct spmat_coo_iter **pp)
-{
-   _FREE(*pp);
-   *pp = NULL;
-}
-
-void
-spmat_coo_iter_reset(struct spmat_coo_iter *p)
-{
-   p->k = 0;
-}
-#endif
-
 #undef  _IS_NULL
 #undef  _FREE

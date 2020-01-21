@@ -26,18 +26,9 @@ struct spmat_csr *spmat_csr_new(void);
 /**
  *  @brief Destructor.
  *  @details Clean up and free a spmat_csr structure.
- *  @param[in, out] p.
+ *  @param[in, out] pp.
  */
 void        spmat_csr_free(struct spmat_csr **pp);
-
-/**
- *  @brief Initialize a spmat_csr object.
- *  @details FIXME longer description here ...
- *  @param[in,out] p Pointer to a spmat_csr object
- *  @param[in] x FIXME
-    @returns FIXME
- */
-int         spmat_csr_init(struct spmat_csr *p, void *x);
 
 /**
  *  @brief Return the version of this package.

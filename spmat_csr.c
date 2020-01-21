@@ -30,6 +30,7 @@ struct spmat_csr {
    void       *x;
    unsigned   *rowptr;
    struct cv  *colval;
+   unsigned nrows;
 };
 
 struct spmat_csr *
@@ -41,7 +42,9 @@ spmat_csr_new(void)
    if (_IS_NULL(tp))
       return NULL;
 
-   /* Do some magic here ... */
+   tp->rowptr = NULL;
+   tp->colval = NULL;
+   tp->nrows = 0;
 
    return tp;
 }
@@ -52,18 +55,10 @@ spmat_csr_free(struct spmat_csr **pp)
 
    /* Do some magic here ... */
 
+   _FREE((*pp)->rowptr);
+   _FREE((*pp)->colval);
    _FREE(*pp);
    *pp = NULL;
-}
-
-int
-spmat_csr_init(struct spmat_csr *p, void *x)
-{
-
-   /* Do some magic here ... */
-   p->x = x;                                     /* FIXME */
-
-   return 0;
 }
 
 const char *
