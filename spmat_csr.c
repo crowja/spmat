@@ -1,6 +1,6 @@
 /**
  *  @file spmat_csr.c
- *  @version 0.1.0-dev0
+ *  @version 0.2.0-dev0
  *  @date Thu Jan 16 22:46:39 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
@@ -69,7 +69,7 @@ spmat_csr_init(struct spmat_csr *p, void *x)
 const char *
 spmat_csr_version(void)
 {
-   return "0.1.0-dev0";
+   return "0.2.0-dev0";
 }
 
 #undef  _IS_NULL
