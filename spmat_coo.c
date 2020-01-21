@@ -1,6 +1,6 @@
 /**
  *  @file spmat_coo.c
- *  @version 0.1.0-dev0
+ *  @version 0.2.0-dev0
  *  @date Sun Jan 19 20:11:15 CST 2020
  *  @copyright 2020 John A. Crow
  *  @license Unlicense <http://unlicense.org/>
@@ -63,7 +63,7 @@ spmat_coo_free(struct spmat_coo **pp)
 const char *
 spmat_coo_version(void)
 {
-   return "0.1.0-dev0";
+   return "0.2.0-dev0";
 }
 
 void
@@ -84,7 +84,26 @@ spmat_coo_colsums(struct spmat_coo *p, unsigned n, double *c)
 }
 
 static int
-_cmp(const void *a, const void *b)
+_cmp_crv(const void *a, const void *b)
+{
+   if (((struct spmat_coo_triple *) a)->j < ((struct spmat_coo_triple *) b)->j)
+      return -1;
+   if (((struct spmat_coo_triple *) a)->j > ((struct spmat_coo_triple *) b)->j)
+      return 1;
+   if (((struct spmat_coo_triple *) a)->i < ((struct spmat_coo_triple *) b)->i)
+      return -1;
+   if (((struct spmat_coo_triple *) a)->i > ((struct spmat_coo_triple *) b)->i)
+      return 1;
+   if (((struct spmat_coo_triple *) a)->v < ((struct spmat_coo_triple *) b)->v)
+      return -1;
+   if (((struct spmat_coo_triple *) a)->v > ((struct spmat_coo_triple *) b)->v)
+      return 1;
+
+   return 0;
+}
+
+static int
+_cmp_rcv(const void *a, const void *b)
 {
    if (((struct spmat_coo_triple *) a)->i < ((struct spmat_coo_triple *) b)->i)
       return -1;
@@ -109,7 +128,7 @@ spmat_coo_compact(struct spmat_coo *p, double tol)
 
    tol = fabs(tol);
 
-   qsort(p->list, p->nnz, sizeof(struct spmat_coo_triple), _cmp);
+   qsort(p->list, p->nnz, sizeof(struct spmat_coo_triple), _cmp_rcv);
 
    /* Combine (add) consecutive locations with repeated i, j */
    for (k = 1, k0 = 0; k < p->nnz; k++) {
