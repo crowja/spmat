@@ -1,3 +1,3 @@
-# spmat 0.2.0-dev0.
+# spmat 0.2.1-dev0.
 
 
