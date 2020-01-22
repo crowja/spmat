@@ -16,7 +16,7 @@ INDENT_FLAGS = -TFILE -Tsize_t -Tuint8_t
 .PHONY: all check check-examples scheck-examples vcheck scheck echeck indent stamp clean
 
 TESTS = t/test
-EXAMPLES = ex/ex_1
+EXAMPLES = ex/ex_1 ex/ex_2 ex/ex_3
 
 all: spmat.o spmat_coo.o spmat_csr.o
 
@@ -26,7 +26,7 @@ spmat.o: spmat.c spmat.h
 spmat_coo.o: spmat_coo.c spmat_coo.h
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $*.c
 
-spmat_csr.o: spmat_csr.c spmat_csr.h
+spmat_csr.o: spmat_csr.c spmat_csr.h spmat_coo.h
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $*.c
 
 check:
@@ -35,7 +35,7 @@ check:
 	  echo "--------------------"; \
 	  echo "Running test $$i"; \
 	  ( $(CC)    $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(OTHER_SOURCE) \
-		-o t/a.out $$i.c spmat.c $(LDFLAGS) ) \
+		-o t/a.out $$i.c spmat.c spmat_coo.c spmat_csr.c $(LDFLAGS) ) \
 	  && ( t/a.out ); \
 	done 
 
@@ -45,7 +45,7 @@ check-examples:
 	  echo "--------------------"; \
 	  echo "Running example $$i"; \
 	  ( $(CC) -g $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(OTHER_SOURCE) \
-		-o ex/a.out $$i.c spmat.c $(LDFLAGS) ) \
+		-o ex/a.out $$i.c spmat.c spmat_coo.c spmat_csr.c $(LDFLAGS) ) \
 	  && ( valgrind $(VALGRIND_FLAGS) ex/a.out ); \
 	done 
 
@@ -55,7 +55,7 @@ scheck-examples:
 	  echo "--------------------"; \
 	  echo "Running example $$i"; \
 	  ( $(CC) -g $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(GCC_SANITIZE_FLAGS) $(OTHER_SOURCE) \
-		-o ex/a.out $$i.c spmat.c $(LDFLAGS) ) \
+		-o ex/a.out $$i.c spmat.c spmat_coo.c spmat_csr.c $(LDFLAGS) ) \
 	  && ( ex/a.out ); \
 	done 
 
@@ -65,7 +65,7 @@ vcheck:
 	  echo "--------------------"; \
 	  echo "Running test $$i"; \
 	  ( $(CC) -g $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(OTHER_SOURCE) \
-		-o t/a.out $$i.c spmat.c $(LDFLAGS) ) \
+		-o t/a.out $$i.c spmat.c spmat_coo.c spmat_csr.c $(LDFLAGS) ) \
 	  && ( valgrind $(VALGRIND_FLAGS) t/a.out ); \
 	done 
 
@@ -75,7 +75,7 @@ scheck:
 	  echo "--------------------"; \
 	  echo "Running test $$i"; \
 	  ( $(CC)    $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(GCC_SANITIZE_FLAGS) $(OTHER_SOURCE) \
-		-o t/a.out $$i.c spmat.c $(LDFLAGS) ) \
+		-o t/a.out $$i.c spmat.c spmat_coo.c spmat_csr.c $(LDFLAGS) ) \
 	  && ( t/a.out ); \
 	done 
 
@@ -85,7 +85,7 @@ echeck:
 	  echo "--------------------"; \
 	  echo "Running test $$i"; \
 	  ( $(CC)    $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(OTHER_SOURCE) \
-		-o t/a.out $$i.c spmat.c $(LDFLAGS_EFENCE) ) \
+		-o t/a.out $$i.c spmat.c spmat_coo.c spmat_csr.c $(LDFLAGS_EFENCE) ) \
 	  && ( LD_PRELOAD=libefence.so t/a.out ) ; \
 	done 
 

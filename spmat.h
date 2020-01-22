@@ -15,18 +15,17 @@
 #define _PACKAGE_NAME "spmat"
 
 /**
- *  @brief FIXME Example function.
- *  @details FIXME longer description here ...
- *  @param cp[in] Pointer to a string.
- *  @returns FIXME.
- */
-int         spmat_func1(const char *cp);
-
-/**
  *  @brief Return the version of this package.
  *  @details FIXME longer description here ...
  *  @returns Version string.
  */
 const char *spmat_version(void);
+
+/**
+ *  @brief FIXME Example function.
+ *  @details FIXME longer description here ...
+ *  @param cp[in] Pointer to a string.
+ *  @returns FIXME.
+ */
 
 #endif

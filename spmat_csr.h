@@ -36,4 +36,6 @@ void        spmat_csr_free(struct spmat_csr **pp);
  */
 const char *spmat_csr_version(void);
 
+int         spmat_csr_from_coo(struct spmat_csr *a, struct spmat_coo *b);
+
 #endif

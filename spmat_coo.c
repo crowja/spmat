@@ -124,13 +124,17 @@ _cmp_rcv(const void *a, const void *b)
 }
 
 void
-spmat_coo_compact(struct spmat_coo *p, double tol)
+spmat_coo_compact(struct spmat_coo *p, double tol, int order)
 {
+   /* order == 0 by rcv, order != 0 by crv */
    unsigned    k, k0;
 
    tol = fabs(tol);
 
-   qsort(p->list, p->nnz, sizeof(struct rcv), _cmp_rcv);
+   if (order)
+      qsort(p->list, p->nnz, sizeof(struct rcv), _cmp_crv);
+   else
+      qsort(p->list, p->nnz, sizeof(struct rcv), _cmp_rcv);
 
    /* Combine (add) consecutive locations with repeated i, j */
    for (k = 1, k0 = 0; k < p->nnz; k++) {
@@ -292,7 +296,7 @@ spmat_coo_mksym(struct spmat_coo *p)
       spmat_coo_insert(p, j, i, v);
    }
 
-   spmat_coo_compact(p, 0.0);
+   spmat_coo_compact(p, 0.0, 0);
 
    for (k = 0; k < p->nnz; k++)
       p->list[k].v /= 2;

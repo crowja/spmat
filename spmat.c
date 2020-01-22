@@ -7,8 +7,9 @@
  */
 
 #include <stdlib.h>
-#include <stdio.h>                               /* FIXME */
-#include <string.h>                              /* FIXME */
+#include <stdio.h>
+#include "spmat_coo.h"
+#include "spmat_csr.h"
 #include "spmat.h"
 
 #ifdef  _IS_NULL
@@ -20,14 +21,6 @@
 #undef  _FREE
 #endif
 #define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
-
-int
-spmat_func1(const char *cp)
-{
-   /* Do some magic here ... */
-
-   return 0;
-}
 
 const char *
 spmat_version(void)
