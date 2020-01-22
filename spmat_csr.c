@@ -23,6 +23,11 @@
 #endif
 #define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
 
+#ifdef  _EXTEND
+#undef  _EXTEND
+#endif
+#define _EXTEND       1024
+
 struct cv {
    unsigned    colind;
    double      val;
@@ -81,14 +86,20 @@ spmat_csr_from_coo(struct spmat_csr *a, struct spmat_coo *b)
    unsigned    i0 = 0;
    unsigned    nnz = 0;
    double      v;
-   unsigned    rowptr[1000];                /* REMOVE THIS */
+
+   /**
+    *  FIXME All of the following needs serious attention. It works on a handful
+    *  of examples but it probably would bear a lot of clean up, particularly 
+    *  need to ensure adequate memory is being allocated.
+    */
 
    /* First make sure a is in row-first format */
    spmat_coo_compact(b, 2 * DBL_MIN, 0);
 
    iter = spmat_coo_iter_new(b);
 
-   rowptr[0] = 0;
+   a->rowptr = realloc(a->rowptr, sizeof(unsigned));
+   a->rowptr[0] = 0;
 
    while (spmat_coo_iter_next(iter, &i, &j, &v)) {
       printf("Forming spmat_csr with %u %u %f\n", i, j, v);
@@ -96,17 +107,23 @@ spmat_csr_from_coo(struct spmat_csr *a, struct spmat_coo *b)
       if (i != i0) {                             /* starting a new row */
          unsigned    iii;
 	 /* I think here is where we realloc rowptr. It'll need at least i + 1 slots. */
+         a->rowptr = realloc(a->rowptr, (i + 1) * sizeof(unsigned));
          for (iii = i0; iii < i; iii++)
-            rowptr[iii + 1] = nnz;
+            a->rowptr[iii + 1] = nnz;
       }
       i0 = i;
       nnz++;
    }
 
-   rowptr[i0 + 1] = nnz;
+   a->rowptr = realloc(a->rowptr, (i0 + 2) * sizeof(unsigned));
+   a->rowptr[i0 + 1] = nnz;
 
-   for (i = 0; i < 7; i++)
-      printf("ROWPTR[%u] = %u\n", i, rowptr[i]);
+   {
+   unsigned k;
+
+   for (k = 0; k < i0 + 2; k++)
+      printf("ROWPTR[%u] = %u\n", k, a->rowptr[k]);
+   }
 
    spmat_coo_iter_free(&iter);
 
