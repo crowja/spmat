@@ -5,7 +5,7 @@
 #include "spmat_csr.h"
 
 int
-main(int argc, char *argv[])
+main(void)
 {
    struct spmat_csr *a = spmat_csr_new();
    struct spmat_coo *b = spmat_coo_new();

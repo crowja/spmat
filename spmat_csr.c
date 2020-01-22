@@ -102,11 +102,12 @@ spmat_csr_from_coo(struct spmat_csr *a, struct spmat_coo *b)
    a->rowptr[0] = 0;
 
    while (spmat_coo_iter_next(iter, &i, &j, &v)) {
+#if 0
       printf("Forming spmat_csr with %u %u %f\n", i, j, v);
       printf("... current row is %u and previous one was %u nzz is %u\n", i, i0, nnz);
+#endif
       if (i != i0) {                             /* starting a new row */
          unsigned    iii;
-	 /* I think here is where we realloc rowptr. It'll need at least i + 1 slots. */
          a->rowptr = realloc(a->rowptr, (i + 1) * sizeof(unsigned));
          for (iii = i0; iii < i; iii++)
             a->rowptr[iii + 1] = nnz;
@@ -115,14 +116,13 @@ spmat_csr_from_coo(struct spmat_csr *a, struct spmat_coo *b)
       nnz++;
    }
 
-   a->rowptr = realloc(a->rowptr, (i0 + 2) * sizeof(unsigned));
-   a->rowptr[i0 + 1] = nnz;
+   a->rowptr = realloc(a->rowptr, (i + 2) * sizeof(unsigned));
+   a->rowptr[i + 1] = nnz;
 
    {
-   unsigned k;
-
-   for (k = 0; k < i0 + 2; k++)
-      printf("ROWPTR[%u] = %u\n", k, a->rowptr[k]);
+      unsigned    k;
+      for (k = 0; k < i0 + 2; k++)
+         printf("ROWPTR[%u] = %u\n", k, a->rowptr[k]);
    }
 
    spmat_coo_iter_free(&iter);
