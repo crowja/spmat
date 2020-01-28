@@ -42,9 +42,10 @@ int         spmat_coo_insert(struct spmat_coo *p, unsigned i, unsigned j, double
 void        spmat_coo_mksym(struct spmat_coo *p);
 void        spmat_coo_reset(struct spmat_coo *p);
 void        spmat_coo_rowsums(struct spmat_coo *p, unsigned m, double *r);
+void        spmat_scale_cols(struct spmat_coo *p, unsigned n, double *s);
+void        spmat_scale_rows(struct spmat_coo *p, unsigned m, double *s);
 void        spmat_coo_shape(struct spmat_coo *p, unsigned *minrow, unsigned *maxrow,
                             unsigned *mincol, unsigned *maxcol);
-
 struct spmat_coo_iter *spmat_coo_iter_new(const struct spmat_coo *p);
 void        spmat_coo_iter_free(struct spmat_coo_iter **pp);
 int         spmat_coo_iter_next(struct spmat_coo_iter *p, unsigned *i, unsigned *j,

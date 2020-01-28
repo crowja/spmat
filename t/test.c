@@ -3,7 +3,7 @@
 #include <float.h>
 #include <math.h>
 #include <string.h>
-#include "spmat.h"
+#include "spmat_coo.h"
 #include "tinytest.h"
 
 #ifdef _COLOR_CODE
@@ -46,14 +46,13 @@ _two_doubles_equal(double x, double y)
 }
 
 static void
-test_func1(void)
+test_coo_new(void)
 {
-   char       *cp = malloc(10000);
+   struct spmat_coo *z = spmat_coo_new();
 
-   _printf_test_name("test_func1", "spmat_func1");
-   memset(cp, 'a', 10000);
-   ASSERT_EQUALS(0, spmat_func1(cp));
-   free(cp);
+   _printf_test_name("test_coo_new", "spmat_coo_new, spmat_coo_free");
+   spmat_coo_free(&z);
+   ASSERT_EQUALS(NULL, z);
 }
 
 /* 7 yy */
@@ -68,9 +67,9 @@ test_stub(void)
 int
 main(void)
 {
-   printf("%s\n", spmat_version());
+   printf("%s\n", spmat_coo_version());
    test_stub();                                  /* only to quiet compiler warnings */
-   RUN(test_func1);
+   RUN(test_coo_new);
 
    return TEST_REPORT();
 }

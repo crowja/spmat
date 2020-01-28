@@ -324,7 +324,24 @@ spmat_coo_rowsums(struct spmat_coo *p, unsigned m, double *r)
    printf("ROWSUMS ARE ...\n");
    for (i = 0; i < m; i++)
       printf("%f\n", r[i]);
+}
 
+void
+spmat_scale_cols(struct spmat_coo *p, unsigned n, double *s)
+{
+   unsigned    k;
+   for (k = 0; k < p->nnz; k++)
+      if (p->list[k].j < n)
+         p->list[k].v *= s[p->list[k].j];
+}
+
+void
+spmat_scale_rows(struct spmat_coo *p, unsigned m, double *s)
+{
+   unsigned    k;
+   for (k = 0; k < p->nnz; k++)
+      if (p->list[k].i < m)
+         p->list[k].v *= s[p->list[k].i];
 }
 
 void
