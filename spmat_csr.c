@@ -130,6 +130,5 @@ spmat_csr_from_coo(struct spmat_csr *a, struct spmat_coo *b)
    return 0;
 }
 
-
 #undef  _IS_NULL
 #undef  _FREE
