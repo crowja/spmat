@@ -1,18 +1,13 @@
 /**
  *  @file spmat_csr.h
  *  @version 0.2.1-dev0
- *  @date Thu Jan 16 22:46:39 CST 2020
+ *  @date Sun Feb 16, 2020 08:30:34 PM CST
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  */
 
-#ifndef _SPMAT_CSR_H_
-#define _SPMAT_CSR_H_
-
-#ifdef  _PACKAGE_NAME
-#undef  _PACKAGE_NAME
-#endif
-#define _PACKAGE_NAME "spmat_csr"
+#ifndef SPMAT_CSR_H
+#define SPMAT_CSR_H
 
 struct spmat_csr;
 

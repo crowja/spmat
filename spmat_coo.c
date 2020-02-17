@@ -1,7 +1,7 @@
 /**
  *  @file spmat_coo.c
  *  @version 0.2.1-dev0
- *  @date Sun Jan 19 20:11:15 CST 2020
+ *  @date Sun Feb 16, 2020 08:30:34 PM CST
  *  @copyright 2020 John A. Crow
  *  @license Unlicense <http://unlicense.org/>
  */
@@ -12,15 +12,15 @@
 #include <limits.h>
 #include "spmat_coo.h"
 
-#ifdef  _IS_NULL
-#undef  _IS_NULL
+#ifdef  IS_NULL
+#undef  IS_NULL
 #endif
-#define _IS_NULL(p)   ((NULL == (p)) ? (1) : (0))
+#define IS_NULL(p)   ((NULL == (p)) ? (1) : (0))
 
-#ifdef  _FREE
-#undef  _FREE
+#ifdef  FREE
+#undef  FREE
 #endif
-#define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
+#define FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
 
 struct rcv {
    unsigned    i;
@@ -41,7 +41,7 @@ spmat_coo_new(void)
    struct spmat_coo *tp;
 
    tp = (struct spmat_coo *) malloc(sizeof(struct spmat_coo));
-   if (_IS_NULL(tp))
+   if (IS_NULL(tp))
       return NULL;
 
    tp->nnz = 0;
@@ -55,8 +55,8 @@ spmat_coo_new(void)
 void
 spmat_coo_free(struct spmat_coo **pp)
 {
-   _FREE((*pp)->list);
-   _FREE(*pp);
+   FREE((*pp)->list);
+   FREE(*pp);
    *pp = NULL;
 }
 
@@ -202,7 +202,7 @@ spmat_coo_insert(struct spmat_coo *p, unsigned i, unsigned j, double v)
    if (p->nnz == p->size) {
       y = realloc(p->list, (p->size + p->extend) * sizeof(struct rcv));
 
-      if (_IS_NULL(y))
+      if (IS_NULL(y))
          return -1;
 
       p->list = y;
@@ -235,10 +235,10 @@ spmat_coo_iter_new(const struct spmat_coo *m)
    struct spmat_coo_iter *tp;
 
    tp = (struct spmat_coo_iter *) malloc(sizeof(struct spmat_coo_iter));
-   if (_IS_NULL(tp))
+   if (IS_NULL(tp))
       return NULL;
 
-   if (_IS_NULL(m))
+   if (IS_NULL(m))
       return NULL;
 
    tp->m = m;
@@ -250,7 +250,7 @@ spmat_coo_iter_new(const struct spmat_coo *m)
 void
 spmat_coo_iter_free(struct spmat_coo_iter **pp)
 {
-   _FREE(*pp);
+   FREE(*pp);
    *pp = NULL;
 }
 
@@ -305,7 +305,7 @@ spmat_coo_mksym(struct spmat_coo *p)
 void
 spmat_coo_reset(struct spmat_coo *p)
 {
-   if (!_IS_NULL(p))
+   if (!IS_NULL(p))
       p->nnz = 0;
 }
 
@@ -365,5 +365,5 @@ spmat_coo_shape(struct spmat_coo *p, unsigned *minrow, unsigned *maxrow, unsigne
    }
 }
 
-#undef  _IS_NULL
-#undef  _FREE
+#undef  IS_NULL
+#undef  FREE

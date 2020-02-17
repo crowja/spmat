@@ -1,7 +1,7 @@
 /**
  *  @file spmat_csr.c
  *  @version 0.2.1-dev0
- *  @date Thu Jan 16 22:46:39 CST 2020
+ *  @date Sun Feb 16, 2020 08:30:34 PM CST
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  */
@@ -13,20 +13,20 @@
 #include "spmat_coo.h"
 #include "spmat_csr.h"
 
-#ifdef  _IS_NULL
-#undef  _IS_NULL
+#ifdef  IS_NULL
+#undef  IS_NULL
 #endif
-#define _IS_NULL(p)   ((NULL == (p)) ? (1) : (0))
+#define IS_NULL(p)   ((NULL == (p)) ? (1) : (0))
 
-#ifdef  _FREE
-#undef  _FREE
+#ifdef  FREE
+#undef  FREE
 #endif
-#define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
+#define FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
 
-#ifdef  _EXTEND
-#undef  _EXTEND
+#ifdef  EXTEND_ROWPTR
+#undef  EXTEND_ROWPTR
 #endif
-#define _EXTEND       1024
+#define EXTEND_ROWPTR 1024
 
 struct cv {
    unsigned    colind;
@@ -47,7 +47,7 @@ spmat_csr_new(void)
    struct spmat_csr *tp;
 
    tp = (struct spmat_csr *) malloc(sizeof(struct spmat_csr));
-   if (_IS_NULL(tp))
+   if (IS_NULL(tp))
       return NULL;
 
    tp->rowptr = NULL;
@@ -64,9 +64,9 @@ spmat_csr_free(struct spmat_csr **pp)
 
    /* Do some magic here ... */
 
-   _FREE((*pp)->rowptr);
-   _FREE((*pp)->colval);
-   _FREE(*pp);
+   FREE((*pp)->rowptr);
+   FREE((*pp)->colval);
+   FREE(*pp);
    *pp = NULL;
 }
 
@@ -130,5 +130,5 @@ spmat_csr_from_coo(struct spmat_csr *a, struct spmat_coo *b)
    return 0;
 }
 
-#undef  _IS_NULL
-#undef  _FREE
+#undef  IS_NULL
+#undef  FREE

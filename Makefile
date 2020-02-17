@@ -10,6 +10,7 @@ LDFLAGS =
 LDFLAGS_EFENCE = -L/usr/lib -lefence $(LDFLAGS)
 #VALGRIND_FLAGS = --verbose --leak-check=full --undef-value-errors=yes --track-origins=yes
 VALGRIND_FLAGS = --leak-check=full --undef-value-errors=yes
+STAMPER = stamper
 
 INDENT_FLAGS = -TFILE -Tsize_t -Tuint8_t
 
@@ -102,12 +103,12 @@ indent:
 	done
 
 stamp:
-	@stamper.bash spmat.c
-	@stamper.bash spmat.h
-	@stamper.bash spmat_coo.c
-	@stamper.bash spmat_coo.h
-	@stamper.bash spmat_csr.c
-	@stamper.bash spmat_csr.h
+	@$(STAMPER) spmat.c
+	@$(STAMPER) spmat.h
+	@$(STAMPER) spmat_coo.c
+	@$(STAMPER) spmat_coo.h
+	@$(STAMPER) spmat_csr.c
+	@$(STAMPER) spmat_csr.h
 
 clean:
 	@/bin/rm -f spmat.o *.o *~ *.BAK *.bak core.* a.out
